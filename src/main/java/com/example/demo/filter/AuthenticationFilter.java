@@ -56,7 +56,9 @@ public class AuthenticationFilter implements Filter{
 			executeFilterLogic(request, response, chain);
 		} catch (Exception e) {
 			logger.error("Unexcepted error in AuthenticationFilter", e);
-			sendErrorResponse((HttpServletResponse) response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal Server error");
+			HttpServletResponse httpResponse = (HttpServletResponse) response;
+			setCORSHeaders(httpResponse);
+			sendErrorResponse(httpResponse, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal Server error");
 		}	
 	}
 	
@@ -67,19 +69,28 @@ public class AuthenticationFilter implements Filter{
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 		
 		String requestURI = httpRequest.getRequestURI();
-		logger.info("Request URI: {}", requestURI);
+		String method = httpRequest.getMethod();
+		logger.info("Request URI: {} | Method: {}", requestURI, method);
+		
+		setCORSHeaders(httpResponse);
+		
+		if(method.equalsIgnoreCase("OPTIONS")) {
+			httpResponse.setStatus(HttpServletResponse.SC_OK);
+			return;
+		}
 		
 		if(Arrays.asList(UNAUTHENTICATED_PATHS).contains(requestURI)) {
 			chain.doFilter(request, response);
 			return;
 		}
 		
-		if(httpRequest.getMethod().equalsIgnoreCase("OPTIONS")) {
-			setCORSHeaders(httpResponse);
-			return;
-		}
+//		if(httpRequest.getMethod().equalsIgnoreCase("OPTIONS")) {
+//			setCORSHeaders(httpResponse);
+//			return;
+//		}
 		
 		String token = getAuthTokenFromCookies(httpRequest);
+		logger.info("Auth token present: {}",token != null);
 		System.out.println(token);
 		if(token == null || !authService.validateToken(token)) {
 			sendErrorResponse(httpResponse, HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: Invalid or missing token");
@@ -88,6 +99,7 @@ public class AuthenticationFilter implements Filter{
 		
 		String username = authService.extractUsername(token);
 		Optional<User> userOptional = userRepo.findByUsername(username);
+		
 		if(userOptional.isEmpty()) {
 			sendErrorResponse(httpResponse, HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: User not found");
 			return;
@@ -103,7 +115,7 @@ public class AuthenticationFilter implements Filter{
 			return;
 		}
 		
-		if(requestURI.startsWith("/api/") && role != Role.USER) {
+		if(requestURI.startsWith("/api/") && role != Role.USER && role != Role.ADMIN) {
 			sendErrorResponse(httpResponse, HttpServletResponse.SC_FORBIDDEN, "Forbidden: User access required");
 			return;
 		}
@@ -117,11 +129,12 @@ public class AuthenticationFilter implements Filter{
 		response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 		response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 		response.setHeader("Access-Control-Allow-Credentials", "true");
-		response.setStatus(HttpServletResponse.SC_OK);
+//		response.setStatus(HttpServletResponse.SC_OK);
 	}
 	
 	private void sendErrorResponse(HttpServletResponse response, int statusCode, String message) throws IOException {
 		response.setStatus(statusCode);
+		response.setContentType("apllication/JSON");
 		response.getWriter().write(message);
 	}
 	

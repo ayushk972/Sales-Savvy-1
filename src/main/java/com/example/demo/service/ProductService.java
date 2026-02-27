@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Category;
@@ -16,10 +17,13 @@ import com.example.demo.repository.ProductRepository;
 @Service
 public class ProductService {
 
+	@Autowired
 	private ProductRepository productRepo;
 	
+	@Autowired
 	private ProductImageRepository productImageRepo;
 	
+	@Autowired
 	private CategoryRepository categoryRepo;
 	
 	public List<Product> getProductsByCategory(String categoryName) {

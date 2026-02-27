@@ -23,7 +23,7 @@ import io.jsonwebtoken.security.Keys;
 public class AuthService {
 
 	private final Key SIGNING_KEY;
-	private final String SECRET = "mysecretkeymysecretkeymysecretkey123456";
+//	private final String SECRET = "mysecretkeymysecretkeymysecretkey123456";
 	
 	private final UserRepository userRepo;
 	private final JWTTokenRepository jwtTokenRepo;
@@ -109,28 +109,20 @@ public class AuthService {
 		}
 	}
 	
-//	public String extractUsername(String token) {
-//		return Jwts.parserBuilder()
-//				.build()
-//				.parseClaimsJws(token)
-//				.getBody()
-//				.getSubject();
-//	}
-	
-	
 	public String extractUsername(String token) {
-	    return Jwts.parserBuilder()
-	            .setSigningKey(getSigningKey())
-	            .build()
-	            .parseClaimsJws(token)
-	            .getBody()
-	            .getSubject();
+		return Jwts.parserBuilder()
+				.setSigningKey(SIGNING_KEY)
+				.build()
+				.parseClaimsJws(token)
+				.getBody()
+				.getSubject();
 	}
 	
 	
-	private Key getSigningKey() {
-	    return Keys.hmacShaKeyFor(SECRET.getBytes());
-	}
+
+//	private Key getSigningKey() {
+//	    return Keys.hmacShaKeyFor(SECRET.getBytes());
+//	}
 	
 	
 }
