@@ -21,4 +21,7 @@ public interface ProductImageRepository extends JpaRepository<ProductImages, Int
 	@Query("DELETE FROM ProductImages pi WHERE pi.product.productId = :productId")
 	void deleteByProductId(@Param("productId") Integer productId);
 	
+	@Query("SELECT pi.imageUrl FROM ProductImages pi WHERE pi.product.productId = :productId ORDER BY pi.image_id ASC LIMIT 1")
+    String findFirstImageUrlByProductId(@Param("productId") Integer productId);
+	
 }

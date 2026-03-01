@@ -16,6 +16,7 @@ import com.example.demo.entity.User;
 import com.example.demo.service.AuthService;
 
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
@@ -63,6 +64,35 @@ public class AuthController {
 			return ResponseEntity
 					.status(HttpStatus.UNAUTHORIZED)
 					.body(Map.of("error", e.getMessage()));
+		}
+	}
+	
+	
+	@PostMapping("/logout")
+	public ResponseEntity<Map<String, String>> logout(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			//REtrive authenticated user from the request
+			User user = (User) request.getAttribute("authenticatedUser");
+			
+			//Delegate logout operation to the service ;ayer
+			authService.logout(user);
+			
+			//Clear the authenticated token cookie
+			Cookie cookie = new Cookie("authToken", null);
+			cookie.setHttpOnly(true);
+			cookie.setMaxAge(0);
+			cookie.setPath("/");
+			response.addCookie(cookie);
+			
+			// Success response
+			Map<String, String> responseBody = new HashMap<>();
+			responseBody.put("message", "Logout successful");
+			return ResponseEntity.ok(responseBody);
+		} catch (Exception e) {
+			// TODO: handle exception
+			Map<String,String> errorResponse = new HashMap<>();
+			errorResponse.put("message", "Logout failed");
+			return ResponseEntity.status(500).body(errorResponse);
 		}
 	}
 }

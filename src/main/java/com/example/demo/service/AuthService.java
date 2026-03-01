@@ -125,6 +125,19 @@ public class AuthService {
 //	}
 	
 	
+	public void logout(User user) {
+		int userid = user.getUserid();
+		
+		//Retrieve the JWT token associated with the user
+		JWTToken token = jwtTokenRepo.findByUserid(userid);
+		
+		//if a token exits, delete it from the repository
+		if(token != null) {
+			jwtTokenRepo.deleteByUserid(userid);
+		}
+	}
+	
+	
 }
 
 
