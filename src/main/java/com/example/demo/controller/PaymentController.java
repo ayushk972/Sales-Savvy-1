@@ -23,7 +23,7 @@ import com.razorpay.RazorpayException;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5174", allowCredentials = "true")
+@CrossOrigin(origins = "*", allowCredentials = "true")
 @RequestMapping("/api/payment")
 public class PaymentController {
 
