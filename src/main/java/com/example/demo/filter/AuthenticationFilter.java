@@ -35,7 +35,7 @@ public class AuthenticationFilter implements Filter{
 	private final AuthService authService;
 	private final UserRepository userRepo;
 	
-	private static final String ALLOWED_ORIGIN = "http://localhost:5174";
+	private static final String ALLOWED_ORIGIN = "https://salessavvy-3lxv.vercel.app";
 	
 	private static final String[] UNAUTHENTICATED_PATHS =  {
 			"/api/users/register",
@@ -125,7 +125,7 @@ public class AuthenticationFilter implements Filter{
 	}
 	
 	private void setCORSHeaders(HttpServletResponse response) {
-		response.setHeader("Access-Control-Allow-Origin", ALLOWED_ORIGIN);
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 		response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 		response.setHeader("Access-Control-Allow-Credentials", "true");
