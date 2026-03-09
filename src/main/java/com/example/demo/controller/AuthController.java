@@ -39,13 +39,18 @@ public class AuthController {
 			
 			String token = authService.generateToken(user);
 			
-			Cookie cookie = new Cookie("authToken", token);
-			cookie.setHttpOnly(true);
-			cookie.setSecure(false);
-			cookie.setPath("/");
-			cookie.setMaxAge(3600);
-//			cookie.setDomain("localhost");
-			response.addCookie(cookie);
+//			Cookie cookie = new Cookie("authToken", token);
+//			cookie.setHttpOnly(true);
+//			cookie.setSecure(true);
+//			cookie.setPath("/");
+//			cookie.setMaxAge(3600);
+////			cookie.setDomain("localhost");
+//			response.addCookie(cookie);
+			
+			response.setHeader("Set-Cookie", String.format(
+		            "authToken=%s; HttpOnly; Secure; Path=/; Max-Age=3600; SameSite=None",
+		            token
+		        ));
 			
 //			response.addHeader("Set-Cookie", String.format("authToken=%s; HttpOnly; Path=/; Max-Age=3600; SameSite=None", token));
 			
@@ -78,11 +83,15 @@ public class AuthController {
 			authService.logout(user);
 			
 			//Clear the authenticated token cookie
-			Cookie cookie = new Cookie("authToken", null);
-			cookie.setHttpOnly(true);
-			cookie.setMaxAge(0);
-			cookie.setPath("/");
-			response.addCookie(cookie);
+//			Cookie cookie = new Cookie("authToken", null);
+//			cookie.setHttpOnly(true);
+//			cookie.setMaxAge(0);
+//			cookie.setPath("/");
+//			response.addCookie(cookie);
+			
+			response.setHeader("Set-Cookie",
+		            "authToken=; HttpOnly; Secure; Path=/; Max-Age=0; SameSite=None"
+		        );
 			
 			// Success response
 			Map<String, String> responseBody = new HashMap<>();
