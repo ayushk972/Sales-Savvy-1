@@ -19,7 +19,7 @@ import com.example.demo.service.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@CrossOrigin(origins = "*", allowCredentials = "true")
+@CrossOrigin(origins = "https://salessavvy-3lxv.vercel.app", allowCredentials = "true")
 @RequestMapping("/api/orders")
 public class OrderController {
 

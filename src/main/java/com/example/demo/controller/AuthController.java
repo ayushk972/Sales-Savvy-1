@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@CrossOrigin(origins = "*", allowCredentials = "true")
+@CrossOrigin(origins = "https://salessavvy-3lxv.vercel.app", allowCredentials = "true")
 @RequestMapping("/api/auth")
 public class AuthController {
 

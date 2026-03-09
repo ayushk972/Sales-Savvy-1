@@ -22,7 +22,7 @@ import com.example.demo.service.CartService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@CrossOrigin(origins = "*", allowCredentials = "true")
+@CrossOrigin(origins = "https://salessavvy-3lxv.vercel.app", allowCredentials = "true")
 @RequestMapping("/api/cart")
 public class CartController {
 
