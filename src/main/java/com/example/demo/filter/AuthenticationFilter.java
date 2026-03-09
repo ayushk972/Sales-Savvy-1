@@ -125,7 +125,7 @@ public class AuthenticationFilter implements Filter{
 	}
 	
 	private void setCORSHeaders(HttpServletResponse response) {
-		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Origin", ALLOWED_ORIGIN);
 		response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 		response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 		response.setHeader("Access-Control-Allow-Credentials", "true");
