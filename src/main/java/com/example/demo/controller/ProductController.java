@@ -21,7 +21,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/products")
-@CrossOrigin(origins = "*", allowCredentials = "true")
+@CrossOrigin(origins = "https://salessavvy-3lxv.vercel.app", allowCredentials = "true")
 public class ProductController {
 	
 	@Autowired

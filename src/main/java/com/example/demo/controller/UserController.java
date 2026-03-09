@@ -16,7 +16,7 @@ import com.example.demo.response.UserRegisterResponse;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin
+@CrossOrigin(origins = "https://salessavvy-3lxv.vercel.app")
 public class UserController {
 
 	UserService userServ;
